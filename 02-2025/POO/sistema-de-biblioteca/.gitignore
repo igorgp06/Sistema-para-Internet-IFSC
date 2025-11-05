@@ -1,0 +1,11 @@
+# data & environment
+.env
+*.env
+.venv
+
+# cache
+src/main/models/__pycache__
+src/main/models/__pycache__/*
+src/main/interface/__pycache__
+src/main/interface/__pycache__/*
+/src/main/__pycache__

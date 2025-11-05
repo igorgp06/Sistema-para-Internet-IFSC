@@ -1,0 +1,31 @@
+{
+    "usuarios": [
+        "Igor",
+        "Mari"
+    ],
+    "itens": [
+        {
+            "titulo": "Dom Casmurro",
+            "autor": "Machado de Assis",
+            "status": "disponível"
+        },
+        {
+            "titulo": "Superinteressante",
+            "autor": "Diversos",
+            "status": "disponível"
+        },
+        {
+            "titulo": "Python para Iniciantes",
+            "autor": "Igor Gonçalves",
+            "status": "disponível"
+        }
+    ],
+    "historico": [
+        {
+            "usuario": "Igor",
+            "item": "Dom Casmurro",
+            "data_emprestimo": "04/11/2025 22:58",
+            "data_devolucao": "04/11/2025 22:58"
+        }
+    ]
+}
