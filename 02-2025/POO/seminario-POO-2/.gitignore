@@ -1,0 +1,17 @@
+# environment files
+.venv
+*venv
+.env
+*.env
+*.info
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# cache files
+src/ui/__pycache__
+src/models/__pycache__
+__pycache__/
+*.pyc
