@@ -29,7 +29,7 @@ class App(ctk.CTk):
         # imobiliaria
         self.imobiliaria = Imobiliaria()
 
-        # bara lateral
+        # barra lateral
         self.sidebar = ctk.CTkFrame(
             self,
             width=200,

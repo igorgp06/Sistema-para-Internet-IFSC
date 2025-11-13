@@ -95,7 +95,7 @@ class TelaClientes(ctk.CTkFrame):
 
         ctk.CTkButton(
             btn_frame,
-            text="Marcar interesse",
+            text="Mostrar interesses",
             fg_color=self.colors["primary"],
             hover_color=self.colors["primary_hover"],
             command=lambda c=cliente: self.abrir_modal_interesse(c)
@@ -133,14 +133,32 @@ class TelaClientes(ctk.CTkFrame):
         msg_erro.pack(pady=5)
 
         def salvar():
+            
             try:
                 cliente = Cliente(entry_nome.get(), entry_tel.get(), entry_email.get())
+                
+                # erros de duplicidade
+                if any(c.nome == cliente.nome for c in self.imobiliaria.listar_clientes()):
+                    raise ValueError("Já existe um cliente com esse nome.")
+                
+                if any(c.email == cliente.email for c in self.imobiliaria.listar_clientes()):
+                    raise ValueError("Já existe um cliente com esse e-mail.")
+                
+                if any(c.telefone == cliente.telefone for c in self.imobiliaria.listar_clientes()):
+                    raise ValueError("Já existe um cliente com esse telefone.")
+                
                 self.imobiliaria.cadastrar_cliente(cliente)
+                
                 self.imobiliaria.atualizar_clientes()
+                
                 self.atualizar_lista()
                 win.destroy()
+                
             except ValueError as e:
                 msg_erro.configure(text=str(e))
+                
+            except Exception as e:
+                msg_erro.configure(text="Erro inesperado no sistema.")
 
         ctk.CTkButton(
             win,

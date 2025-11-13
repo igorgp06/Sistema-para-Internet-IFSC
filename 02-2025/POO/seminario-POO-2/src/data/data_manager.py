@@ -5,7 +5,9 @@ from src.models.propriedade import Propriedade
 
 class DataManager:
     def __init__(self):
-        self.base_path = os.path.dirname(__file__) # TODO jogar para umas pasta "log"
+        # criação do diretorio logs que contem os arquivos de dados
+        self.base_path = os.path.join(os.path.dirname(__file__), 'logs')
+        os.makedirs(self.base_path, exist_ok=True)
         self.file_props = os.path.join(self.base_path, "propriedades.json")
         self.file_clients = os.path.join(self.base_path, "clientes.json")
         

@@ -55,8 +55,8 @@ class TelaPropriedades(ctk.CTkFrame):
             return
 
         for i, prop in enumerate(propriedades):
-            row = i // 3
-            col = i % 3
+            row = i // 1
+            col = i % 1
             self._criar_card_propriedade(prop, row, col)
 
     def _cor_status(self, status):
