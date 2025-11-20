@@ -198,9 +198,11 @@ class TelaPropriedades(ctk.CTkFrame):
     def _abrir_modal_prop(self, prop=None):
         is_edit = prop is not None
 
+        # config janela de nova propriedade ou edição
         win = ctk.CTkToplevel(self)
         win.title("Editar Propriedade" if is_edit else "Nova Propriedade")
-        win.geometry("420x420")
+        win.geometry("450x450")
+        win.resizable(False, False)
         win.grab_set()
 
         # campos
@@ -237,6 +239,7 @@ class TelaPropriedades(ctk.CTkFrame):
         msg_erro.pack(pady=5)
 
         def salvar():
+            
             try:
                 endereco = entry_end.get()
                 descricao = entry_desc.get()
@@ -251,9 +254,11 @@ class TelaPropriedades(ctk.CTkFrame):
                     prop.tipo = tipo
                     prop.preco_venda = float(venda)
                     prop.preco_locacao = float(loc)
+                    
                 else:
                     nova = Propriedade(endereco, descricao, tipo, venda, loc)
                     self.imobiliaria.cadastrar_propriedade(nova)
+                    
 
                 self.imobiliaria.atualizar_propriedades()
                 self.atualizar_cards()
@@ -268,4 +273,4 @@ class TelaPropriedades(ctk.CTkFrame):
             fg_color=self.colors["primary"],
             hover_color=self.colors["primary_hover"],
             command=salvar
-        ).pack(pady=20)
+        ).pack(pady=13)

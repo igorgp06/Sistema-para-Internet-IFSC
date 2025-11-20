@@ -3,8 +3,12 @@ class Propriedade:
     STATUS_VALIDOS = ["disponível", "em negociação", "vendido", "alugado"]
 
     def __init__(self, endereco, descricao, tipo, preco_venda, preco_locacao, status="disponível"):
+        
         if not endereco or not endereco.strip():
             raise ValueError("A propriedade deve conter um endereço válido.")
+        
+        if not descricao or not descricao.strip():
+            descricao = "Sem descrição disponível."
 
         tipo = tipo.lower()
         if tipo not in self.TIPOS_VALIDOS:
@@ -16,6 +20,7 @@ class Propriedade:
         try:
             preco_venda = float(preco_venda)
             preco_locacao = float(preco_locacao)
+            
         except ValueError:
             raise ValueError("Preços devem ser números válidos.")
 
