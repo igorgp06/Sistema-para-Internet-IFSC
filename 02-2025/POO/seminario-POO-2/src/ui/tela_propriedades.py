@@ -130,7 +130,7 @@ class TelaPropriedades(ctk.CTkFrame):
 
         ctk.CTkLabel(
             preco_frame,
-            text=f"Locação: R$ {prop.preco_locacao:,.2f}",
+            text=f"Locação: {'Não se aplica.' if prop.preco_locacao == 'Não se aplica.' else f'R$ {prop.preco_locacao:,.2f}'}",
             font=("Segoe UI", 11),
             text_color=self.colors["foreground"]
         ).pack(anchor="w")
@@ -171,7 +171,7 @@ class TelaPropriedades(ctk.CTkFrame):
             command=lambda p=prop: self.remover_prop(p)
         ).pack(side="left", expand=True, fill="x", padx=(5, 0))
 
-    # ---------- ações ----------
+    # ações
 
     def marcar_vendida(self, prop):
         prop.marcar_vendida()
@@ -187,7 +187,7 @@ class TelaPropriedades(ctk.CTkFrame):
         self.imobiliaria.remover_propriedade(prop.endereco)
         self.atualizar_cards()
 
-    # ---------- modais ----------
+    # modais
 
     def abrir_modal_nova_prop(self):
         self._abrir_modal_prop()

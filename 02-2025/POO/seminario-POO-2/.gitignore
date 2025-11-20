@@ -10,8 +10,10 @@
 .idea/
 *.iml
 
-# cache files
+# cache e logs files
 src/ui/__pycache__
 src/models/__pycache__
 __pycache__/
 *.pyc
+*.log
+src/data/logs

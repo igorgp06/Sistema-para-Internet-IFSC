@@ -6,10 +6,13 @@ class Propriedade:
         
         if not endereco or not endereco.strip():
             raise ValueError("A propriedade deve conter um endereço válido.")
-        
+                
+        if len(endereco) < 5:
+            raise ValueError("O endereço deve ter ao menos 5 caracteres.")
+                
         if not descricao or not descricao.strip():
             descricao = "Sem descrição disponível."
-
+            
         tipo = tipo.lower()
         if tipo not in self.TIPOS_VALIDOS:
             raise ValueError("Tipo inválido. Use: casa, apartamento ou terreno.")
@@ -18,9 +21,23 @@ class Propriedade:
             raise ValueError("Status inválido.")
 
         try:
+            
             preco_venda = float(preco_venda)
             preco_locacao = float(preco_locacao)
             
+            if preco_venda < 0 or preco_locacao < 0:
+                raise ValueError("Preços não podem ser negativos.")
+            
+            if preco_venda == 0 and preco_locacao == 0:
+                raise ValueError("Ao menos um dos preços deve ser maior que zero.")
+            
+            if preco_locacao == 0 and tipo == "terreno":
+                raise ValueError("Terrenos não podem ser alugados.")
+            
+            if preco_locacao == 0:
+                preco_locacao = str()
+                preco_locacao = "Não se aplica."
+
         except ValueError:
             raise ValueError("Preços devem ser números válidos.")
 
@@ -31,8 +48,8 @@ class Propriedade:
         self.preco_locacao = preco_locacao
         self.status = status
 
-    def marcar_vendida(self):
-        self.status = "vendido"
+    def marcar_vendida(self):   # TODO ao tentar alugar ou vender, abrir uma tela para associar a ação com um cliente
+        self.status = "vendido" # TODO ao clilar em vendido, desabilitar botões de ação (com exceção de remover)
 
     def marcar_alugada(self):
         self.status = "alugado"

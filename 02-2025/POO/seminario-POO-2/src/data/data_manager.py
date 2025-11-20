@@ -22,7 +22,7 @@ class DataManager:
             with open(self.file_clients, "w", encoding="utf-8") as f:
                 json.dump([], f, indent=4, ensure_ascii=False)
 
-    # -------- PROPRIEDADES --------
+    # propriedades ou props
     
     def salvar_propriedades(self, propriedades):
         data = [p.to_dict() for p in propriedades]
@@ -45,7 +45,7 @@ class DataManager:
             propriedades.append(prop)
         return propriedades
 
-    # -------- CLIENTES --------
+    # clientes
     def salvar_clientes(self, clientes):
         data = [c.to_dict() for c in clientes]
         with open(self.file_clients, "w", encoding="utf-8") as f:

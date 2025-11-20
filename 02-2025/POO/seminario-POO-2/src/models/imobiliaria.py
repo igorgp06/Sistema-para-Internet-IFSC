@@ -6,7 +6,7 @@ class Imobiliaria:
         self.propriedades = self.data.carregar_propriedades()
         self.clientes = self.data.carregar_clientes(self.propriedades)
 
-    # ------- PROPRIEDADES -------
+    # propriedades (ou props)
     def cadastrar_propriedade(self, prop):
         self.propriedades.append(prop)
         self.data.salvar_propriedades(self.propriedades)
@@ -28,7 +28,7 @@ class Imobiliaria:
     def atualizar_propriedades(self):
         self.data.salvar_propriedades(self.propriedades)
 
-    # ------- CLIENTES -------
+    # clientes
     def cadastrar_cliente(self, cliente):
         self.clientes.append(cliente)
         self.data.salvar_clientes(self.clientes)

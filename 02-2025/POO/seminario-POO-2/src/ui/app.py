@@ -32,7 +32,7 @@ class App(ctk.CTk):
         # barra lateral
         self.sidebar = ctk.CTkFrame(
             self,
-            width=200,
+            width=260,
             fg_color=COLORS["card"],
         )
         self.sidebar.pack(side="left", fill="y")
@@ -42,7 +42,8 @@ class App(ctk.CTk):
             text="Sistema Imobiliário",
             font=("Segoe UI", 16, "bold"),
             text_color=COLORS["foreground"]
-        ).pack(pady=30)
+        ).pack(pady=30, padx=10)
+        self.sidebar.pack_propagate(False)
 
         ctk.CTkButton(
             self.sidebar,
@@ -50,7 +51,7 @@ class App(ctk.CTk):
             fg_color=COLORS["primary"],
             hover_color=COLORS["primary_hover"],
             command=self.mostrar_dashboard
-        ).pack(pady=10, padx=5 , fill="x")
+        ).pack(pady=10, padx=10 , fill="x")
 
         ctk.CTkButton(
             self.sidebar,
