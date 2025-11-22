@@ -113,6 +113,7 @@ class TelaClientes(ctk.CTkFrame):
         win = ctk.CTkToplevel(self)
         win.title("Novo Cliente")
         win.geometry("400x320")
+        win.resizable(False, False)
         win.grab_set()
 
         lbl_style = {"text_color": self.colors["foreground"], "font": ("Segoe UI", 12)}

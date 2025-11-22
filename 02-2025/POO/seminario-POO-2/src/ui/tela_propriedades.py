@@ -128,9 +128,14 @@ class TelaPropriedades(ctk.CTkFrame):
             text_color=self.colors["foreground"]
         ).pack(anchor="w")
 
+        if prop.preco_locacao == 0:
+            loc_text = "Não se aplica."
+        else:
+            loc_text = f"R$ {prop.preco_locacao:,.2f}"
+
         ctk.CTkLabel(
             preco_frame,
-            text=f"Locação: {'Não se aplica.' if prop.preco_locacao == 'Não se aplica.' else f'R$ {prop.preco_locacao:,.2f}'}",
+            text=f"Locação: {loc_text}",
             font=("Segoe UI", 11),
             text_color=self.colors["foreground"]
         ).pack(anchor="w")

@@ -59,7 +59,7 @@ class App(ctk.CTk):
             fg_color=COLORS["primary"],
             hover_color=COLORS["primary_hover"],
             command=self.mostrar_propriedades
-        ).pack(pady=10, padx=5 , fill="x")
+        ).pack(pady=10, padx=10 , fill="x")
 
         ctk.CTkButton(
             self.sidebar,
@@ -67,7 +67,7 @@ class App(ctk.CTk):
             fg_color=COLORS["primary"],
             hover_color=COLORS["primary_hover"],
             command=self.mostrar_clientes
-        ).pack(pady=10, padx=5 , fill="x")
+        ).pack(pady=10, padx=10 , fill="x")
 
         # area de conteudo
         self.frame_conteudo = ctk.CTkFrame(

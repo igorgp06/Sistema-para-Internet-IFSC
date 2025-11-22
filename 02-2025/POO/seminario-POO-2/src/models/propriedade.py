@@ -21,25 +21,23 @@ class Propriedade:
             raise ValueError("Status inválido.")
 
         try:
-            
             preco_venda = float(preco_venda)
             preco_locacao = float(preco_locacao)
-            
-            if preco_venda < 0 or preco_locacao < 0:
-                raise ValueError("Preços não podem ser negativos.")
-            
-            if preco_venda == 0 and preco_locacao == 0:
-                raise ValueError("Ao menos um dos preços deve ser maior que zero.")
-            
-            if preco_locacao == 0 and tipo == "terreno":
-                raise ValueError("Terrenos não podem ser alugados.")
-            
-            if preco_locacao == 0:
-                preco_locacao = str()
-                preco_locacao = "Não se aplica."
-
+        
         except ValueError:
             raise ValueError("Preços devem ser números válidos.")
+
+        if preco_venda < 0 or preco_locacao < 0:
+            raise ValueError("Preços não podem ser negativos.")
+
+        if preco_venda == 0 and preco_locacao == 0:
+            raise ValueError("Ao menos um dos preços deve ser maior que zero.")
+
+        if preco_locacao > 0 and tipo == "terreno":
+            raise ValueError("Terrenos não podem ser alugados.")
+
+        self.preco_venda = preco_venda
+        self.preco_locacao = preco_locacao
 
         self.endereco = endereco
         self.descricao = descricao
