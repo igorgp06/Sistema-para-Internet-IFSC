@@ -75,7 +75,7 @@ class TelaPropriedades(ctk.CTkFrame):
         card = ctk.CTkFrame(
             self.scroll,
             fg_color=self.colors["card"],
-            border_color=self.colors["border"], # TODO deixar os cards um sob o outro não lado a lado
+            border_color=self.colors["border"],
             border_width=2,
             corner_radius=12
         )
@@ -149,16 +149,20 @@ class TelaPropriedades(ctk.CTkFrame):
             text="Vender",
             fg_color="#f97316",
             hover_color="#fb923c",
-            command=lambda p=prop: self.marcar_vendida(p)
+            command=lambda p=prop: self.abrir_modal_vender(p)
         ).pack(side="left", expand=True, fill="x", padx=(0, 5))
 
-        ctk.CTkButton(
+        btn_alugar = ctk.CTkButton(
             btn_frame,
             text="Alugar",
             fg_color="#3b82f6",
             hover_color="#60a5fa",
-            command=lambda p=prop: self.marcar_alugada(p)
-        ).pack(side="left", expand=True, fill="x", padx=5)
+            command=lambda p=prop: self.abrir_modal_alugar(p)
+        )
+
+        btn_alugar.pack(side="left", expand=True, fill="x", padx=5)
+        if prop.tipo == "terreno":
+            btn_alugar.configure(state="disabled", fg_color="#1f2937")
 
         ctk.CTkButton(
             btn_frame,
@@ -279,3 +283,57 @@ class TelaPropriedades(ctk.CTkFrame):
             hover_color=self.colors["primary_hover"],
             command=salvar
         ).pack(pady=13)
+
+    def abrir_modal_vender(self, prop):
+        clientes = self.imobiliaria.listar_clientes()
+        if not clientes:
+            return 
+
+        win = ctk.CTkToplevel(self)
+        win.title("Selecionar comprador")
+        win.geometry("300x200")
+        win.resizable(False, False)
+        win.grab_set()
+
+        nomes = [c.nome for c in clientes]
+        opt = ctk.CTkOptionMenu(win, values=nomes)
+        opt.pack(pady=20)
+
+        def confirmar():
+            nome = opt.get()
+            cliente = self.imobiliaria.buscar_cliente(nome)
+            prop.comprador = cliente
+            prop.marcar_vendida()
+            self.imobiliaria.atualizar_propriedades()
+            self.atualizar_cards()
+            win.destroy()
+
+        ctk.CTkButton(win, text="Confirmar",
+                    fg_color=self.colors["primary"],
+                    command=confirmar).pack(pady=10)
+
+    def abrir_modal_alugar(self, prop):
+        clientes = self.imobiliaria.listar_clientes()
+
+        win = ctk.CTkToplevel(self)
+        win.title("Selecionar locatário")
+        win.geometry("300x200")
+        win.resizable(False, False)
+        win.grab_set()
+
+        nomes = [c.nome for c in clientes]
+        opt = ctk.CTkOptionMenu(win, values=nomes)
+        opt.pack(pady=20)
+
+        def confirmar():
+            nome = opt.get()
+            cliente = self.imobiliaria.buscar_cliente(nome)
+            prop.locatario = cliente
+            prop.marcar_alugada()
+            self.imobiliaria.atualizar_propriedades()
+            self.atualizar_cards()
+            win.destroy()
+
+        ctk.CTkButton(win, text="Confirmar",
+                    fg_color=self.colors["primary"],
+                    command=confirmar).pack(pady=10)

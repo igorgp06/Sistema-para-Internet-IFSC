@@ -2,17 +2,26 @@ class Propriedade:
     TIPOS_VALIDOS = ["casa", "apartamento", "terreno"]
     STATUS_VALIDOS = ["disponível", "em negociação", "vendido", "alugado"]
 
-    def __init__(self, endereco, descricao, tipo, preco_venda, preco_locacao, status="disponível"):
-        
+    def __init__(self, endereco, descricao, tipo,
+                preco_venda, preco_locacao,
+                pd_vender=True, pd_alugar=True,
+                status="disponível",
+                comprador=None, locatario=None):
+
+        self.pd_vender = pd_vender
+        self.pd_alugar = pd_alugar
+        self.comprador = comprador
+        self.locatario = locatario
+
         if not endereco or not endereco.strip():
             raise ValueError("A propriedade deve conter um endereço válido.")
-                
+
         if len(endereco) < 5:
             raise ValueError("O endereço deve ter ao menos 5 caracteres.")
-                
+
         if not descricao or not descricao.strip():
             descricao = "Sem descrição disponível."
-            
+
         tipo = tipo.lower()
         if tipo not in self.TIPOS_VALIDOS:
             raise ValueError("Tipo inválido. Use: casa, apartamento ou terreno.")
@@ -23,7 +32,7 @@ class Propriedade:
         try:
             preco_venda = float(preco_venda)
             preco_locacao = float(preco_locacao)
-        
+
         except ValueError:
             raise ValueError("Preços devem ser números válidos.")
 
@@ -36,9 +45,6 @@ class Propriedade:
         if preco_locacao > 0 and tipo == "terreno":
             raise ValueError("Terrenos não podem ser alugados.")
 
-        self.preco_venda = preco_venda
-        self.preco_locacao = preco_locacao
-
         self.endereco = endereco
         self.descricao = descricao
         self.tipo = tipo
@@ -46,8 +52,8 @@ class Propriedade:
         self.preco_locacao = preco_locacao
         self.status = status
 
-    def marcar_vendida(self):   # TODO ao tentar alugar ou vender, abrir uma tela para associar a ação com um cliente
-        self.status = "vendido" # TODO ao clilar em vendido, desabilitar botões de ação (com exceção de remover)
+    def marcar_vendida(self):
+        self.status = "vendido"
 
     def marcar_alugada(self):
         self.status = "alugado"
@@ -59,8 +65,9 @@ class Propriedade:
             "tipo": self.tipo,
             "preco_venda": self.preco_venda,
             "preco_locacao": self.preco_locacao,
+            "pd_vender": self.pd_vender,
+            "pd_alugar": self.pd_alugar,
             "status": self.status,
+            "comprador": self.comprador.nome if self.comprador else None,
+            "locatario": self.locatario.nome if self.locatario else None,
         }
-
-    def __str__(self):
-        return f"{self.tipo.title()} - {self.endereco} ({self.status})"
