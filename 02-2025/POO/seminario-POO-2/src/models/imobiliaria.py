@@ -29,6 +29,7 @@ class Imobiliaria:
         self.data.salvar_propriedades(self.propriedades)
 
     # clientes
+    
     def cadastrar_cliente(self, cliente):
         self.clientes.append(cliente)
         self.data.salvar_clientes(self.clientes)

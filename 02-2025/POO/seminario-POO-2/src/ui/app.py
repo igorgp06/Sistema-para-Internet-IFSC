@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import os
 
 from src.models.imobiliaria import Imobiliaria
 from src.ui.tela_dashboard import TelaDashboard
@@ -40,7 +39,7 @@ class App(ctk.CTk):
         ctk.CTkLabel(
             self.sidebar,
             text="Sistema Imobiliário",
-            font=("Segoe UI", 16, "bold"),
+            font=("Segoe UI", 20, "bold"),
             text_color=COLORS["foreground"]
         ).pack(pady=30, padx=10)
         self.sidebar.pack_propagate(False)
@@ -76,7 +75,6 @@ class App(ctk.CTk):
         )
         self.frame_conteudo.pack(side="right", expand=True, fill="both")
 
-        # Tela inicial
         self.mostrar_dashboard()
 
     def limpar_conteudo(self):

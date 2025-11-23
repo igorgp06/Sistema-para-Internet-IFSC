@@ -79,9 +79,9 @@ class TelaClientes(ctk.CTkFrame):
 
         # interesses
         if cliente.interesses:
-            txt = "Interesses: " + ", ".join([p.endereco for p in cliente.interesses])
+            txt = f"Interesses: " + ", ".join([p.endereco for p in cliente.interesses])
         else:
-            txt = "Interesses: nenhum"
+            txt = "O cliente não possui interesses cadastrados."
 
         ctk.CTkLabel(
             card,
@@ -95,7 +95,7 @@ class TelaClientes(ctk.CTkFrame):
 
         ctk.CTkButton(
             btn_frame,
-            text="Mostrar interesses",
+            text="Alterar interesses",
             fg_color=self.colors["primary"],
             hover_color=self.colors["primary_hover"],
             command=lambda c=cliente: self.abrir_modal_interesse(c)
@@ -111,7 +111,7 @@ class TelaClientes(ctk.CTkFrame):
 
     def abrir_modal_novo_cliente(self):
         win = ctk.CTkToplevel(self)
-        win.title("Novo Cliente")
+        win.title("Cadastrar novo Cliente")
         win.geometry("400x320")
         win.resizable(False, False)
         win.grab_set()
@@ -136,9 +136,11 @@ class TelaClientes(ctk.CTkFrame):
         def salvar():
             
             try:
+                
                 cliente = Cliente(entry_nome.get(), entry_tel.get(), entry_email.get())
                 
                 # erros de duplicidade
+                
                 if any(c.nome == cliente.nome for c in self.imobiliaria.listar_clientes()):
                     raise ValueError("Já existe um cliente com esse nome.")
                 
@@ -147,6 +149,35 @@ class TelaClientes(ctk.CTkFrame):
                 
                 if any(c.telefone == cliente.telefone for c in self.imobiliaria.listar_clientes()):
                     raise ValueError("Já existe um cliente com esse telefone.")
+                
+                # erros de validação geral
+                
+                if not cliente.nome.strip():
+                    raise ValueError("O nome do cliente não pode ser vazio.")
+                
+                if not cliente.email.strip():
+                    raise ValueError("O e-mail do cliente não pode ser vazio.")
+                
+                if not cliente.telefone.strip():
+                    raise ValueError("O telefone do cliente não pode ser vazio.")
+                
+                if not cliente.email.strip() or "@" not in cliente.email:
+                    raise ValueError("E-mail inválido.")
+                
+                if not cliente.telefone.strip():
+                    raise ValueError("Telefone inválido.")
+                
+                if len(cliente.telefone) < 8:
+                    raise ValueError("Telefone muito curto.")
+                
+                if len(cliente.telefone) > 15:
+                    raise ValueError("Telefone muito longo.")
+                
+                if len(cliente.nome) < 3:
+                    raise ValueError("Nome muito curto.")
+                
+                if len(cliente.nome) > 50:
+                    raise ValueError("Nome muito longo.")
                 
                 self.imobiliaria.cadastrar_cliente(cliente)
                 
@@ -175,8 +206,9 @@ class TelaClientes(ctk.CTkFrame):
             return
 
         win = ctk.CTkToplevel(self)
-        win.title(f"Interesse de {cliente.nome}")
+        win.title(f"Interesse do Cliente: {cliente.nome}")
         win.geometry("400x250")
+        win.resizable(False, False)
         win.grab_set()
 
         ctk.CTkLabel(

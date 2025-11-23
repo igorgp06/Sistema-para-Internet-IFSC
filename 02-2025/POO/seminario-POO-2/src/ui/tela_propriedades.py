@@ -92,9 +92,20 @@ class TelaPropriedades(ctk.CTkFrame):
             text_color=self.colors["foreground"]
         ).pack(side="left")
 
+        if prop.status.lower() == "disponível":
+            prop_status = "Disponível"
+        elif prop.status.lower() == "em negociação":
+            prop_status = "Em negociação"
+        elif prop.status.lower() == "vendido":
+            prop_status = f"Vendido a: {prop.comprador.nome}" if prop.comprador else "Vendido"
+        elif prop.status.lower() == "alugado":
+            prop_status = f"Alugado a: {prop.locatario.nome}" if prop.locatario else "Alugado"
+        else:
+            prop_status = prop.status
+
         ctk.CTkLabel(
             top,
-            text=prop.status.upper(),
+            text=prop_status,
             font=("Segoe UI", 12, "bold"),
             text_color=self._cor_status(prop.status)
         ).pack(side="right")
