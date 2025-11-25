@@ -75,19 +75,4 @@ class DataManager:
 
             clientes.append(c)
 
-        # associação de compradores e locatarios
-        
-        for item in data:
-            if item.get("comprador"):
-                cliente = next((cl for cl in clientes if cl.nome == item["comprador"]), None)
-                prop = next((p for p in propriedades if p.endereco == item["endereco"]), None)
-                if cliente and prop:
-                    prop.comprador = cliente
-
-            if item.get("locatario"):
-                cliente = next((cl for cl in clientes if cl.nome == item["locatario"]), None)
-                prop = next((p for p in propriedades if p.endereco == item["endereco"]), None)
-                if cliente and prop:
-                    prop.locatario = cliente
-
         return clientes

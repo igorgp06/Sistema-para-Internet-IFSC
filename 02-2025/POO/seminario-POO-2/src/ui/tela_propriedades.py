@@ -155,13 +155,18 @@ class TelaPropriedades(ctk.CTkFrame):
         btn_frame = ctk.CTkFrame(card, fg_color="transparent")
         btn_frame.pack(fill="x", padx=10, pady=(6, 10))
 
-        ctk.CTkButton(
+        btn_vender = ctk.CTkButton(
             btn_frame,
             text="Vender",
             fg_color="#f97316",
             hover_color="#fb923c",
             command=lambda p=prop: self.abrir_modal_vender(p)
-        ).pack(side="left", expand=True, fill="x", padx=(0, 5))
+        )
+        
+        btn_vender.pack(side="left", expand=True, fill="x", padx=(0, 5))
+        
+        if not prop.pd_vender or prop.preco_venda == 0:
+            btn_vender.configure(state="disabled", fg_color="#1f2937")
 
         btn_alugar = ctk.CTkButton(
             btn_frame,
@@ -171,8 +176,9 @@ class TelaPropriedades(ctk.CTkFrame):
             command=lambda p=prop: self.abrir_modal_alugar(p)
         )
 
-        btn_alugar.pack(side="left", expand=True, fill="x", padx=5)
-        if prop.tipo == "terreno":
+        btn_alugar.pack(side="left", expand=True, fill="x", padx=(0, 5))
+
+        if not prop.pd_alugar or prop.tipo == "terreno" or prop.preco_locacao == 0:
             btn_alugar.configure(state="disabled", fg_color="#1f2937")
 
         ctk.CTkButton(
@@ -221,7 +227,7 @@ class TelaPropriedades(ctk.CTkFrame):
         # config janela de nova propriedade ou edição
         win = ctk.CTkToplevel(self)
         win.title("Editar Propriedade" if is_edit else "Nova Propriedade")
-        win.geometry("450x450")
+        win.geometry("420x480")
         win.resizable(False, False)
         win.grab_set()
 
@@ -248,12 +254,71 @@ class TelaPropriedades(ctk.CTkFrame):
         entry_loc = ctk.CTkEntry(win, width=360)
         entry_loc.pack(padx=20)
 
+        frame_checks = ctk.CTkFrame(win, fg_color="transparent")
+        frame_checks.pack(fill="x", padx=20, pady=(15, 0))
+
+        chk_vender = ctk.CTkCheckBox(frame_checks, text="Pode ser vendida")
+        chk_vender.pack(side="left")
+
+        chk_alugar = ctk.CTkCheckBox(frame_checks, text="Pode ser alugada")
+        chk_alugar.pack(side="right")
+
+        chk_vender.select()
+        chk_alugar.select()
+
+        # regras de negócio
+        def aplicar_regras_tipo(tipo):
+            if tipo == "terreno":
+                chk_alugar.deselect()
+                chk_alugar.configure(state="disabled")
+
+                entry_loc.delete(0, "end")
+                entry_loc.insert(0, "0")
+                entry_loc.configure(state="disabled")
+            else:
+                chk_alugar.configure(state="normal")
+                if chk_alugar.get() == 1:
+                    entry_loc.configure(state="normal")
+
+        def aplicar_regras_venda():
+            if chk_vender.get() == 0:
+                entry_venda.delete(0, "end")
+                entry_venda.insert(0, "0")
+                entry_venda.configure(state="disabled")
+            else:
+                entry_venda.configure(state="normal")
+
+        def aplicar_regras_aluguel():
+            if chk_alugar.get() == 0:
+                entry_loc.delete(0, "end")
+                entry_loc.insert(0, "0")
+                entry_loc.configure(state="disabled")
+            else:
+                entry_loc.configure(state="normal")
+
+        # eventos
+        def on_tipo_change(tipo):
+            aplicar_regras_tipo(tipo)
+
+        tipo_opt.configure(command=on_tipo_change)
+
+        chk_vender.configure(command=aplicar_regras_venda)
+        chk_alugar.configure(command=aplicar_regras_aluguel)
+
         if is_edit:
             entry_end.insert(0, prop.endereco)
             entry_desc.insert(0, prop.descricao)
             tipo_opt.set(prop.tipo)
+
             entry_venda.insert(0, str(prop.preco_venda))
             entry_loc.insert(0, str(prop.preco_locacao))
+
+            chk_vender.deselect() if not prop.pd_vender else chk_vender.select()
+            chk_alugar.deselect() if not prop.pd_alugar else chk_alugar.select()
+
+            aplicar_regras_tipo(prop.tipo)
+            aplicar_regras_venda()
+            aplicar_regras_aluguel()
 
         msg_erro = ctk.CTkLabel(win, text="", text_color="#f97316")
         msg_erro.pack(pady=5)
@@ -265,7 +330,16 @@ class TelaPropriedades(ctk.CTkFrame):
                 descricao = entry_desc.get()
                 tipo = tipo_opt.get()
                 venda = entry_venda.get()
-                loc = entry_loc.get()
+                locacao = entry_loc.get()
+                pd_vender = chk_vender.get() == 1
+                pd_alugar = chk_alugar.get() == 1
+
+                if tipo == "terreno":
+                    pd_alugar = False
+                    locacao = 0
+
+                if not (pd_vender or pd_alugar):
+                    raise ValueError("Marque venda, aluguel ou ambos.")
 
                 if is_edit:
                     # atualiza o objeto existente
@@ -273,12 +347,13 @@ class TelaPropriedades(ctk.CTkFrame):
                     prop.descricao = descricao
                     prop.tipo = tipo
                     prop.preco_venda = float(venda)
-                    prop.preco_locacao = float(loc)
-                    
+                    prop.preco_locacao = float(locacao)
+                    prop.pd_vender = pd_vender
+                    prop.pd_alugar = pd_alugar
+
                 else:
-                    nova = Propriedade(endereco, descricao, tipo, venda, loc)
+                    nova = Propriedade(endereco, descricao, tipo, venda, locacao, pd_vender, pd_alugar)
                     self.imobiliaria.cadastrar_propriedade(nova)
-                    
 
                 self.imobiliaria.atualizar_propriedades()
                 self.atualizar_cards()
@@ -293,7 +368,7 @@ class TelaPropriedades(ctk.CTkFrame):
             fg_color=self.colors["primary"],
             hover_color=self.colors["primary_hover"],
             command=salvar
-        ).pack(pady=13)
+        ).pack(pady=13, padx=10)
 
     def abrir_modal_vender(self, prop):
         clientes = self.imobiliaria.listar_clientes()

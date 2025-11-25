@@ -12,6 +12,9 @@ class Propriedade:
         self.pd_alugar = pd_alugar
         self.comprador = comprador
         self.locatario = locatario
+        
+        if not (pd_vender or pd_alugar):
+            raise ValueError("A propriedade deve estar disponível para venda, aluguel ou ambos.")
 
         if not endereco or not endereco.strip():
             raise ValueError("A propriedade deve conter um endereço válido.")
