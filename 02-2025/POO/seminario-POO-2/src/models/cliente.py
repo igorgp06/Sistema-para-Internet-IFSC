@@ -1,18 +1,48 @@
 class Cliente:
-    def __init__(self, nome, telefone, email):
-        if not nome or not nome.strip():
+    
+    # metodo estatico q valida e normaliza os dados do cliente
+    @staticmethod
+    def validar_dados(nome, telefone, email):
+        nome = (nome or "").strip()
+        telefone = (telefone or "").strip()
+        email = (email or "").strip()
+
+        if not nome:
             raise ValueError("Nome do cliente não pode ser vazio.")
-        
-        if not telefone or not telefone.strip():
+        if len(nome) < 3:
+            raise ValueError("Nome muito curto.")
+        if len(nome) > 50:
+            raise ValueError("Nome muito longo.")
+
+        if not telefone:
             raise ValueError("Telefone do cliente não pode ser vazio.")
-        
-        if not email or not email.strip():
+        if not telefone.isdigit():
+            raise ValueError("Telefone deve conter apenas números e não pode conter espaços.")
+        if len(telefone) < 8:
+            raise ValueError("Telefone muito curto.")
+        if len(telefone) > 15:
+            raise ValueError("Telefone muito longo.")
+
+        if not email:
             raise ValueError("Email do cliente não pode ser vazio.")
+        if "@" not in email:
+            raise ValueError("E-mail inválido.")
+
+        return nome, telefone, email
+
+    def __init__(self, nome, telefone, email):
+        nome, telefone, email = self.validar_dados(nome, telefone, email)
 
         self.nome = nome
         self.telefone = telefone
         self.email = email
         self.interesses = []  # lista de Propriedade
+
+    def atualizar_dados(self, nome, telefone, email):
+        nome, telefone, email = self.validar_dados(nome, telefone, email)
+        self.nome = nome
+        self.telefone = telefone
+        self.email = email
 
     def adicionar_interesse(self, propriedade):
         if propriedade not in self.interesses:

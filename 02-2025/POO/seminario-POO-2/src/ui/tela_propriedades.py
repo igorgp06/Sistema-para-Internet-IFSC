@@ -330,7 +330,6 @@ class TelaPropriedades(ctk.CTkFrame):
         msg_erro.pack(pady=5)
 
         def salvar():
-            
             try:
                 endereco = entry_end.get()
                 descricao = entry_desc.get()
@@ -340,25 +339,40 @@ class TelaPropriedades(ctk.CTkFrame):
                 pd_vender = chk_vender.get() == 1
                 pd_alugar = chk_alugar.get() == 1
 
-                if tipo == "terreno":
-                    pd_alugar = False
-                    locacao = 0
-
-                if not (pd_vender or pd_alugar):
-                    raise ValueError("Marque venda, aluguel ou ambos.")
-
                 if is_edit:
-                    # atualiza o objeto existente
-                    prop.endereco = endereco
-                    prop.descricao = descricao
-                    prop.tipo = tipo
-                    prop.preco_venda = float(venda)
-                    prop.preco_locacao = float(locacao)
-                    prop.pd_vender = pd_vender
-                    prop.pd_alugar = pd_alugar
+                    nova = Propriedade(
+                        endereco,
+                        descricao,
+                        tipo,
+                        venda,
+                        locacao,
+                        pd_vender,
+                        pd_alugar,
+                        status=prop.status,
+                        comprador=prop.comprador,
+                        locatario=prop.locatario
+                    )
+
+                    prop.endereco = nova.endereco
+                    prop.descricao = nova.descricao
+                    prop.tipo = nova.tipo
+                    prop.preco_venda = nova.preco_venda
+                    prop.preco_locacao = nova.preco_locacao
+                    prop.pd_vender = nova.pd_vender
+                    prop.pd_alugar = nova.pd_alugar
+                    prop.comprador = nova.comprador
+                    prop.locatario = nova.locatario
 
                 else:
-                    nova = Propriedade(endereco, descricao, tipo, venda, locacao, pd_vender, pd_alugar)
+                    nova = Propriedade(
+                        endereco,
+                        descricao,
+                        tipo,
+                        venda,
+                        locacao,
+                        pd_vender,
+                        pd_alugar
+                    )
                     self.imobiliaria.cadastrar_propriedade(nova)
 
                 self.imobiliaria.atualizar_propriedades()
@@ -376,6 +390,7 @@ class TelaPropriedades(ctk.CTkFrame):
             command=salvar
         ).pack(pady=13, padx=10)
 
+    # abrir modal vender, se não houver clientes não faz nada
     def abrir_modal_vender(self, prop):
         clientes = self.imobiliaria.listar_clientes()
         if not clientes:
@@ -404,9 +419,13 @@ class TelaPropriedades(ctk.CTkFrame):
                     fg_color=self.colors["primary"],
                     command=confirmar).pack(pady=10)
 
+    # abrir modal alugar, se não houver clientes não faz nada
     def abrir_modal_alugar(self, prop):
         clientes = self.imobiliaria.listar_clientes()
+        if not clientes:
+            return
 
+            return 
         win = ctk.CTkToplevel(self)
         win.title("Selecionar locatário")
         win.geometry("300x200")

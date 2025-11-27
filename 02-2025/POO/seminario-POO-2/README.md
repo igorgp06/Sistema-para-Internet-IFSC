@@ -33,6 +33,6 @@ Para executar o projeto, siga os passos abaixo:
 
 5. Execute o arquivo principal do sistema:
    ```bash
-   python3 -m src.ui.app
+   python3 -m src.main
    ```
 

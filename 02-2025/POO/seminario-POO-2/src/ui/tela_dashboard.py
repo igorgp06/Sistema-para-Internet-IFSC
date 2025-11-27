@@ -38,7 +38,7 @@ class TelaDashboard(ctk.CTkFrame):
         for col in range(4):
             grid.grid_columnconfigure(col, weight=1, uniform="cards")
 
-        # 2 linhas linhas 
+        # 2 linhas
         grid.grid_rowconfigure(0, weight=1)
         grid.grid_rowconfigure(1, weight=1)
 
