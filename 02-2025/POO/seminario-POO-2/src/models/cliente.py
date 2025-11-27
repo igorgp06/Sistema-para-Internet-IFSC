@@ -2,6 +2,12 @@ class Cliente:
     def __init__(self, nome, telefone, email):
         if not nome or not nome.strip():
             raise ValueError("Nome do cliente não pode ser vazio.")
+        
+        if not telefone or not telefone.strip():
+            raise ValueError("Telefone do cliente não pode ser vazio.")
+        
+        if not email or not email.strip():
+            raise ValueError("Email do cliente não pode ser vazio.")
 
         self.nome = nome
         self.telefone = telefone

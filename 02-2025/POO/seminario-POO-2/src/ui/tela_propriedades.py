@@ -132,14 +132,20 @@ class TelaPropriedades(ctk.CTkFrame):
         preco_frame = ctk.CTkFrame(card, fg_color="transparent")
         preco_frame.pack(fill="x", padx=10, pady=4)
 
+        if prop.preco_venda == 0 or not prop.pd_vender:
+            venda_text = "Não se aplica."
+        else:
+            venda_text = f"R$ {prop.preco_venda:,.2f}"
+
         ctk.CTkLabel(
             preco_frame,
-            text=f"Venda: R$ {prop.preco_venda:,.2f}",
+            text=f"Venda: {venda_text}",
             font=("Segoe UI", 11),
             text_color=self.colors["foreground"]
         ).pack(anchor="w")
 
-        if prop.preco_locacao == 0:
+
+        if prop.preco_locacao == 0 or not prop.pd_alugar or prop.tipo == "terreno":
             loc_text = "Não se aplica."
         else:
             loc_text = f"R$ {prop.preco_locacao:,.2f}"

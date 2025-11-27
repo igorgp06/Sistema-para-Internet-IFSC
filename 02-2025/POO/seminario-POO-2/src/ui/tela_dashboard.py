@@ -22,13 +22,6 @@ class TelaDashboard(ctk.CTkFrame):
             text_color=self.colors["foreground"]
         ).pack(side="left")
 
-        ctk.CTkLabel(
-            header,
-            text="Resumo das propriedades e clientes cadastrados",
-            font=("Segoe UI", 12),
-            text_color="#9AA0A6"
-        ).pack(side="left", padx=(10, 0))
-
     def _criar_cards(self):
         props = self.imobiliaria.listar_propriedades()
         clientes = self.imobiliaria.listar_clientes()
@@ -41,11 +34,11 @@ class TelaDashboard(ctk.CTkFrame):
         grid = ctk.CTkFrame(self, fg_color=self.colors["background"])
         grid.pack(expand=True, fill="both", padx=20, pady=20)
 
-        # 4 colunas com mesmo tamanho
+        # 4 colunas do mesmo tamanho
         for col in range(4):
             grid.grid_columnconfigure(col, weight=1, uniform="cards")
 
-        # 2 linhas (linha 0 = 4 cards, linha 1 = 1 card full width)
+        # 2 linhas linhas 
         grid.grid_rowconfigure(0, weight=1)
         grid.grid_rowconfigure(1, weight=1)
 
@@ -63,7 +56,7 @@ class TelaDashboard(ctk.CTkFrame):
                 columnspan=col_span,
                 padx=10,
                 pady=10,
-                sticky="nsew"  # ocupa toda a célula
+                sticky="nsew"
             )
 
             ctk.CTkLabel(
@@ -80,11 +73,11 @@ class TelaDashboard(ctk.CTkFrame):
                 text_color=cor_valor or self.colors["foreground"]
             ).pack(anchor="w", padx=16, pady=(2, 12))
 
-        # linha 0
+        # linha 0 com 4 colunas
         card("Total de propriedades", total,        0, 0)
         card("Disponíveis",            disponiveis, 0, 1, cor_valor="#22c55e")
         card("Vendidas",               vendidas,    0, 2, cor_valor="#f97316")
         card("Alugadas",               alugadas,    0, 3, cor_valor="#3b82f6")
 
-        # linha 1: ocupa todas as colunas
+        # linha 1 ocupa todas as 4 colunas 
         card("Clientes cadastrados", len(clientes), 1, 0, col_span=4)

@@ -14,7 +14,7 @@ Os detalhes podem ser encontrados na pasta [`docs`](./docs/), onde estão dispon
 
 Para executar o projeto, siga os passos abaixo:
 
-1. Certifique-se de ter o Python instalado em sua máquina. Você pode baixar a versão mais recente do Python em [python.org](https://www.python.org/downloads/).
+1. Certifique-se de ter o Python instalado em sua máquina. Você pode baixar a versão mais recente do Python em [python.org](https://www.python.org/downloads/). Para este projeto, recomenda-se o uso do Python 3.8 ou superior.
 
 2. Clone este repositório para o seu computador usando o comando:
    ```bash
