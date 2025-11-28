@@ -229,7 +229,7 @@ class TelaClientes(ctk.CTkFrame):
 
         enderecos = [p.endereco for p in props]
         opt = ctk.CTkOptionMenu(win, values=enderecos)
-        opt.pack(padx=20)
+        opt.pack(padx=25, pady=10)
 
         def marcar():
             end = opt.get()
@@ -246,7 +246,24 @@ class TelaClientes(ctk.CTkFrame):
             fg_color=self.colors["primary"],
             hover_color=self.colors["primary_hover"],
             command=marcar
-        ).pack(pady=20)
+        ).pack(pady=10, padx=25)
+        
+        def desmarcar():
+            end = opt.get()
+            prop = self.imobiliaria.buscar_propriedade(end)
+            if prop:
+                cliente.remover_interesse(prop)
+                self.imobiliaria.atualizar_clientes()
+                self.atualizar_lista()
+            win.destroy()
+
+        ctk.CTkButton(
+            win,
+            text="Desmarcar",
+            fg_color=self.colors["primary"],
+            hover_color=self.colors["primary_hover"],
+            command=desmarcar
+        ).pack(pady=5, padx=25)
 
     def remover_cliente(self, cliente):
         self.imobiliaria.remover_cliente(cliente.nome)

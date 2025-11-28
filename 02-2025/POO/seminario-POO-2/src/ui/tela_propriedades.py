@@ -168,9 +168,9 @@ class TelaPropriedades(ctk.CTkFrame):
             hover_color="#fb923c",
             command=lambda p=prop: self.abrir_modal_vender(p)
         )
-        
+
         btn_vender.pack(side="left", expand=True, fill="x", padx=(0, 5))
-        
+
         if not prop.pd_vender or prop.preco_venda == 0:
             btn_vender.configure(state="disabled", fg_color="#1f2937")
 
@@ -186,6 +186,18 @@ class TelaPropriedades(ctk.CTkFrame):
 
         if not prop.pd_alugar or prop.tipo == "terreno" or prop.preco_locacao == 0:
             btn_alugar.configure(state="disabled", fg_color="#1f2937")
+
+        btn_negociar = ctk.CTkButton(
+            btn_frame,
+            text="Negociar",
+            fg_color="#eab308",
+            hover_color="#facc15",
+            command=lambda p=prop: self.marcar_negociacao(p)
+        )
+        btn_negociar.pack(side="left", expand=True, fill="x", padx=5)
+
+        if prop.status in ["vendido", "alugado"]:
+            btn_negociar.configure(state="disabled", fg_color="#1f2937")
 
         ctk.CTkButton(
             btn_frame,
@@ -212,6 +224,18 @@ class TelaPropriedades(ctk.CTkFrame):
 
     def marcar_alugada(self, prop):
         prop.marcar_alugada()
+        self.imobiliaria.atualizar_propriedades()
+        self.atualizar_cards()
+        
+    def marcar_negociacao(self, prop):
+        if prop.status in ["vendido", "alugado"]:
+            return
+
+        if prop.status == "em negociação":
+            prop.status = "disponível"
+        else:
+            prop.marcar_em_negociacao()
+
         self.imobiliaria.atualizar_propriedades()
         self.atualizar_cards()
 
@@ -425,7 +449,6 @@ class TelaPropriedades(ctk.CTkFrame):
         if not clientes:
             return
 
-            return 
         win = ctk.CTkToplevel(self)
         win.title("Selecionar locatário")
         win.geometry("300x200")

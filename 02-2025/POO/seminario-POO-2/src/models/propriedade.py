@@ -24,7 +24,6 @@ class Propriedade:
         if status not in self.STATUS_VALIDOS:
             raise ValueError("Status inválido.")
 
-        # conversão dos preços
         try:
             preco_venda = float(preco_venda)
             preco_locacao = float(preco_locacao)
@@ -34,14 +33,22 @@ class Propriedade:
         if preco_venda < 0 or preco_locacao < 0:
             raise ValueError("Preços não podem ser negativos.")
 
-        # forçar regras de negócio zeradas 
+        # forcar regras de negócio baseadas no tipo
         if tipo == "terreno":
             pd_alugar = False
             preco_locacao = 0.0
+
         if not pd_vender:
             preco_venda = 0.0
+
         if not pd_alugar:
             preco_locacao = 0.0
+
+        if pd_vender and preco_venda == 0.0:
+            raise ValueError("Preço de venda deve ser informado se a propriedade estiver à venda.")
+
+        if pd_alugar and preco_locacao == 0.0:
+            raise ValueError("Preço de locação deve ser informado se a propriedade estiver para alugar.")
 
         if not (pd_vender or pd_alugar):
             raise ValueError("A propriedade deve estar disponível para venda, aluguel ou ambos.")
@@ -66,6 +73,9 @@ class Propriedade:
         if locatario is not None:
             self.locatario = locatario
         self.status = "alugado"
+
+    def marcar_em_negociacao(self):
+        self.status = "em negociação"
 
     def to_dict(self):
         return {

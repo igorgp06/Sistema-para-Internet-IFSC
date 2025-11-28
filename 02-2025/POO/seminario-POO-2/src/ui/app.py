@@ -22,7 +22,7 @@ class App(ctk.CTk):
         ctk.set_appearance_mode("dark")
 
         self.title("Sistema Imobiliário - Igor Gonçalves")
-        self.geometry("1000x600")
+        self.geometry("1100x600")
         self.resizable(False, False)
 
         # imobiliaria
