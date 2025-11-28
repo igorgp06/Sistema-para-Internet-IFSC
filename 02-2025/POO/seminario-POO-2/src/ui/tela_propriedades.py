@@ -40,9 +40,8 @@ class TelaPropriedades(ctk.CTkFrame):
         self.scroll.pack(expand=True, fill="both", padx=10, pady=(0, 10))
 
     def atualizar_cards(self):
-        # delete geral
-        for widget in self.scroll.winfo_children():
-            widget.destroy()
+        for w in self.scroll.winfo_children():
+            w.destroy()
 
         propriedades = self.imobiliaria.listar_propriedades()
 
@@ -51,13 +50,12 @@ class TelaPropriedades(ctk.CTkFrame):
                 self.scroll,
                 text="Nenhuma propriedade cadastrada.",
                 text_color=self.colors["foreground"]
-            ).grid(row=0, column=0, padx=10, pady=10, sticky="w")
+            ).pack(pady=10, anchor="w")
             return
 
-        for i, prop in enumerate(propriedades):
-            row = i // 1
-            col = i % 1
-            self._criar_card_propriedade(prop, row, col)
+        for prop in propriedades:
+            
+            self._criar_card_propriedade(prop)
 
     def _cor_status(self, status):
         status = status.lower()
@@ -71,7 +69,7 @@ class TelaPropriedades(ctk.CTkFrame):
             return "#3b82f6"
         return self.colors["foreground"]
 
-    def _criar_card_propriedade(self, prop, row, col):
+    def _criar_card_propriedade(self, prop):
         card = ctk.CTkFrame(
             self.scroll,
             fg_color=self.colors["card"],
@@ -79,7 +77,7 @@ class TelaPropriedades(ctk.CTkFrame):
             border_width=2,
             corner_radius=12
         )
-        card.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
+        card.pack(padx=10, pady=10, fill="x", anchor="w")
 
         # tipos e status
         top = ctk.CTkFrame(card, fg_color="transparent")

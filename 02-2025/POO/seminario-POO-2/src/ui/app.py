@@ -23,7 +23,8 @@ class App(ctk.CTk):
 
         self.title("Sistema Imobiliário - Igor Gonçalves")
         self.geometry("1100x600")
-        self.resizable(False, False)
+        self.minsize(1100, 600)
+        self.configure(fg_color=COLORS["background"])
 
         # imobiliaria
         self.imobiliaria = Imobiliaria()

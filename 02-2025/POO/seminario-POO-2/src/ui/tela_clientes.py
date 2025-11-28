@@ -47,7 +47,7 @@ class TelaClientes(ctk.CTkFrame):
                 self.scroll,
                 text="Nenhum cliente cadastrado.",
                 text_color=self.colors["foreground"]
-            ).pack(pady=10, anchor="w")
+            )
             return
 
         for c in clientes:
