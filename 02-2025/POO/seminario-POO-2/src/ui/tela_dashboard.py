@@ -1,5 +1,7 @@
 import customtkinter as ctk
 
+
+# tela incial do sistema reunindo todos os dados importantes em cards
 class TelaDashboard(ctk.CTkFrame):
     def __init__(self, master, imobiliaria, colors):
         super().__init__(master, fg_color=colors["background"])

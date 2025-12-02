@@ -1,8 +1,11 @@
 from src.data.data_manager import DataManager
 from src.models.cliente import Cliente
 
+# centro do sistema e das regras de negócio.
+# mantém as coleções de clientes e propriedades e conversa com o DataManager
 class Imobiliaria:
     def __init__(self):
+        # ao iniciar carrega tudo do json
         self.data = DataManager()
         self.propriedades = self.data.carregar_propriedades()
         self.clientes = self.data.carregar_clientes(self.propriedades)
@@ -27,9 +30,11 @@ class Imobiliaria:
         return False
 
     def atualizar_propriedades(self):
+        # método chamado sempre que algo muda nas propriedades
         self.data.salvar_propriedades(self.propriedades)
 
-    # seçaõ dos clientes
+    # seção dos clientes
+    # segue a msm lógica das propriedades 
     def _validar_unicidade_cliente(self, nome, telefone, email, ignorar=None):
         for c in self.clientes:
             if ignorar is not None and c is ignorar:
@@ -43,6 +48,7 @@ class Imobiliaria:
                 raise ValueError("Já existe um cliente com esse telefone.")
 
     def cadastrar_cliente(self, cliente: Cliente):
+        # validar unicidade antes de adicionar 
         self._validar_unicidade_cliente(cliente.nome, cliente.telefone, cliente.email)
         self.clientes.append(cliente)
         self.data.salvar_clientes(self.clientes)
@@ -55,6 +61,8 @@ class Imobiliaria:
 
     def atualizar_cliente(self, cliente: Cliente, novo_nome: str, novo_tel: str, novo_email: str):
 
+        # encapsulamento e reutilização
+        # usamos Cliente.validar_dados para garantir que os dados editados continuam válidos.
         novo_nome, novo_tel, novo_email = Cliente.validar_dados(novo_nome, novo_tel, novo_email)
 
         self._validar_unicidade_cliente(novo_nome, novo_tel, novo_email, ignorar=cliente)

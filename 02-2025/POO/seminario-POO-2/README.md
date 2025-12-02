@@ -26,13 +26,19 @@ Para executar o projeto, siga os passos abaixo:
     cd ./Sistema-para-Internet-IFSC/02-2025/POO/seminario-POO-2/
     ```
 
-4. Instale as dependências necessárias utilizando o pip:
+4. (Opcional) Crie e ative um ambiente virtual para isolar as dependências do projeto:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # No Windows use `venv\Scripts\activate`
+   ```
+
+5. Instale as dependências necessárias utilizando o pip:
    ```bash
    pip install -r requirements.txt
    ```
 
-5. Execute o arquivo principal do sistema:
+6. Execute o arquivo principal do sistema:
    ```bash
-   python3 -m src.main
+   python3 -m main
    ```
 

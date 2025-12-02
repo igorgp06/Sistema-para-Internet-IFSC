@@ -3,6 +3,8 @@ import os
 from src.models.cliente import Cliente
 from src.models.propriedade import Propriedade
 
+# o DataManager é como se fosse um mini banco de dados
+# Ele é o responsável por ler/gravar dados em arquivos JSON
 class DataManager:
     def __init__(self):
         # criação do diretorio logs que contem os arquivos de dados
@@ -13,7 +15,8 @@ class DataManager:
         self.file_clients = os.path.join(self.base_path, "clientes.json")
 
         self._criar_arquivos()
-
+        
+    # se os arquivos ainda não existem cria vazios
     def _criar_arquivos(self):
         if not os.path.exists(self.file_props):
             with open(self.file_props, "w", encoding="utf-8") as f:
@@ -25,6 +28,7 @@ class DataManager:
 
     # propriedades
 
+    # converte objetos Propriedade para dicionários e salva no JSON
     def salvar_propriedades(self, propriedades):
         data = [p.to_dict() for p in propriedades]
         with open(self.file_props, "w", encoding="utf-8") as f:

@@ -1,4 +1,8 @@
+
+#  concentra t0das as regras de negócio de Propriedade:
+# tipos válidos, status, se pode ou não alugar/vender, validação de preços
 class Propriedade:
+    # mapeação dos tipos e status válidos
     TIPOS_VALIDOS = ["casa", "apartamento", "terreno"]
     STATUS_VALIDOS = ["disponível", "em negociação", "vendido", "alugado"]
 
@@ -8,6 +12,7 @@ class Propriedade:
                 status="disponível",
                 comprador=None, locatario=None):
 
+        # validações básicas
         if not endereco or not endereco.strip():
             raise ValueError("A propriedade deve conter um endereço válido.")
 
@@ -33,7 +38,7 @@ class Propriedade:
         if preco_venda < 0 or preco_locacao < 0:
             raise ValueError("Preços não podem ser negativos.")
 
-        # forcar regras de negócio baseadas no tipo
+        # forcar regras de negócio baseadas no tipo e disponibilidade
         if tipo == "terreno":
             pd_alugar = False
             preco_locacao = 0.0
@@ -53,6 +58,7 @@ class Propriedade:
         if not (pd_vender or pd_alugar):
             raise ValueError("A propriedade deve estar disponível para venda, aluguel ou ambos.")
 
+        # se não cair em nenhuma exceção atribui os valores
         self.endereco = endereco.strip()
         self.descricao = descricao
         self.tipo = tipo
@@ -77,6 +83,7 @@ class Propriedade:
     def marcar_em_negociacao(self):
         self.status = "em negociação"
 
+    # converter para dicionario (json)
     def to_dict(self):
         return {
             "endereco": self.endereco,

@@ -14,6 +14,9 @@ COLORS = {
     "border": "#1E2838"
 }
 
+# o App funciona como um controlador da interface gráfica.
+# ela cria a Imobiliaria (backend) e troca as telas (dashboard, propriedades, clientes)
+# dentro do mesmo frame de conteúdo sempre que o usuário clica em um botão na sidebar
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -26,7 +29,7 @@ class App(ctk.CTk):
         self.minsize(1100, 600)
         self.configure(fg_color=COLORS["background"])
 
-        # imobiliaria
+        # instancia a camada de regras de negócio
         self.imobiliaria = Imobiliaria()
 
         # barra lateral
@@ -69,7 +72,7 @@ class App(ctk.CTk):
             command=self.mostrar_clientes
         ).pack(pady=10, padx=10 , fill="x")
 
-        # area de conteudo
+        # area de conteúdo onde as telas são trocadas
         self.frame_conteudo = ctk.CTkFrame(
             self,
             fg_color=COLORS["background"]

@@ -1,6 +1,8 @@
 import customtkinter as ctk
 from src.models.cliente import Cliente
-
+# separação de responsabilidades:
+# UI só coleta dados, mostra erros e chama métodos da Imobiliaria/Cliente
+# as validações e regras de negócio ficam nas models
 class TelaClientes(ctk.CTkFrame):
     def __init__(self, master, imobiliaria, colors):
         super().__init__(master, fg_color=colors["background"])
@@ -47,7 +49,7 @@ class TelaClientes(ctk.CTkFrame):
                 self.scroll,
                 text="Nenhum cliente cadastrado.",
                 text_color=self.colors["foreground"]
-            )
+            ).pack(pady=10, anchor="w")
             return
 
         for c in clientes:
@@ -140,6 +142,7 @@ class TelaClientes(ctk.CTkFrame):
         msg_erro = ctk.CTkLabel(win, text="", text_color="#f97316")
         msg_erro.pack(pady=5)
 
+        # se Cliente ou Imobiliaria lançar açgum ValueError a mensagem aparece na tela.
         def salvar():
             try:
                 cliente = Cliente(entry_nome.get(), entry_tel.get(), entry_email.get())

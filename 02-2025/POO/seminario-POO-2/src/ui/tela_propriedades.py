@@ -40,6 +40,7 @@ class TelaPropriedades(ctk.CTkFrame):
         self.scroll.pack(expand=True, fill="both", padx=10, pady=(0, 10))
 
     def atualizar_cards(self):
+        # limpa todos os cards antes de redesenhar
         for w in self.scroll.winfo_children():
             w.destroy()
 
@@ -194,6 +195,7 @@ class TelaPropriedades(ctk.CTkFrame):
         )
         btn_negociar.pack(side="left", expand=True, fill="x", padx=5)
 
+        # se já foi vendida ou alugada, não faz sentido negociar
         if prop.status in ["vendido", "alugado"]:
             btn_negociar.configure(state="disabled", fg_color="#1f2937")
 
@@ -334,6 +336,7 @@ class TelaPropriedades(ctk.CTkFrame):
         chk_alugar.configure(command=aplicar_regras_aluguel)
 
         if is_edit:
+            # preenche os campos com os dados existentes quando for edição
             entry_end.insert(0, prop.endereco)
             entry_desc.insert(0, prop.descricao)
             tipo_opt.set(prop.tipo)
@@ -351,6 +354,9 @@ class TelaPropriedades(ctk.CTkFrame):
         msg_erro = ctk.CTkLabel(win, text="", text_color="#f97316")
         msg_erro.pack(pady=5)
 
+        # aqui é onde a UI conversa com a Propriedade
+        # se os dados forem inválidos o construtor levanta ValueError
+        # e a mensagem aparece na label msg_erro 
         def salvar():
             try:
                 endereco = entry_end.get()
@@ -375,6 +381,7 @@ class TelaPropriedades(ctk.CTkFrame):
                         locatario=prop.locatario
                     )
 
+                    # copia dados válidos de volta para o objeto original
                     prop.endereco = nova.endereco
                     prop.descricao = nova.descricao
                     prop.tipo = nova.tipo

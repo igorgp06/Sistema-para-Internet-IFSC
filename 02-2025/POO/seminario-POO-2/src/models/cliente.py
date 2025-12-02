@@ -7,6 +7,7 @@ class Cliente:
         telefone = (telefone or "").strip()
         email = (email or "").strip()
 
+        # validações de erros básicos
         if not nome:
             raise ValueError("Nome do cliente não pode ser vazio.")
         if len(nome) < 3:
@@ -33,10 +34,13 @@ class Cliente:
     def __init__(self, nome, telefone, email):
         nome, telefone, email = self.validar_dados(nome, telefone, email)
 
+        # uso do encapsulamento
+        # antes de salvar qualquer atributo, chamamos validar_dados.
+        # Se estiver inválido cai na exception e a instanciação não ocorre.
         self.nome = nome
         self.telefone = telefone
         self.email = email
-        self.interesses = []  # lista de Propriedade
+        self.interesses = []  # lista de propriedades de interesse
 
     def atualizar_dados(self, nome, telefone, email):
         nome, telefone, email = self.validar_dados(nome, telefone, email)
@@ -44,6 +48,7 @@ class Cliente:
         self.telefone = telefone
         self.email = email
 
+    # adicionar propriedade de interesse
     def adicionar_interesse(self, propriedade):
         if propriedade not in self.interesses:
             self.interesses.append(propriedade)
@@ -52,6 +57,8 @@ class Cliente:
         if propriedade in self.interesses:
             self.interesses.remove(propriedade)
 
+    # converter para dicionario (json)
+    # aqui não salvamos o objeto Propriedade inteiro, apenas o endereço dela
     def to_dict(self):
         return {
             "nome": self.nome,
